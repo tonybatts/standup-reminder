@@ -1,0 +1,90 @@
+/* Box sizing rules */
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+    }
+
+    /* Remove default padding */
+    ul[class],
+    ol[class] {
+      padding: 0;
+    }
+
+    /* Remove default margin */
+    body,
+    h1,
+    h2,
+    h3,
+    h4,
+    p,
+    ul[class],
+    ol[class],
+    li,
+    figure,
+    figcaption,
+    blockquote,
+    dl,
+    dd {
+      margin: 0;
+    }
+
+    /* Set core body defaults */
+    body {
+      min-height: 100vh;
+      scroll-behavior: smooth;
+      text-rendering: optimizeSpeed;
+      line-height: 1.5;
+    }
+
+    /* Remove list styles on ul, ol elements with a class attribute */
+    ul[class],
+    ol[class] {
+      list-style: none;
+    }
+
+    h1 {
+      font-size: 20px;
+      font-weight: lighter;
+      text-align: center;
+      color: #1b242f;
+    }
+
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    .time {
+      font-size: 70px;
+    }
+
+    .wrapper {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%,-50%);
+    }
+
+    .heading {
+      padding-top: 10px;
+      text-align: center;
+      line-height: 15px;
+    }
+
+    @-webkit-keyframes fadeIn { from { opacity:.0; } to { opacity:1; } }
+@-moz-keyframes fadeIn { from { opacity:.0; } to { opacity:1; } }
+@keyframes fadeIn { from { opacity:.0; } to { opacity:1; } }
+
+.fade-in {
+  opacity:0;  /* make things invisible upon start */
+  -webkit-animation:fadeIn ease-in 1;  /* call our keyframe named fadeIn, use animattion ease-in and repeat it only 1 time */
+  -moz-animation:fadeIn ease-in 1;
+  animation:fadeIn ease-in 1;
+  -webkit-animation-fill-mode:forwards;  /* this makes sure that after animation is done we remain at the last keyframe value (opacity: 1)*/
+  -moz-animation-fill-mode:forwards;
+  animation-fill-mode:forwards;
+  -webkit-animation-duration:.7s;
+  -moz-animation-duration:.7s;
+  animation-duration: .7s;
+  animation-delay: .7s;
+}
