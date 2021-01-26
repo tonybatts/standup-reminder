@@ -11,14 +11,23 @@
 
 <body>
   <div class="main">
-    <div class="heading item">
-      <h1>Stand Up Reminder</h1>
+    <div class="row">
+      <div class="column grow">
+        <div class="heading">
+          <!-- <h1>Stand Up Reminder</h1> -->
+          <img src="standd.png" alt="stand up logo">
+        </div>
+      </div>
+      <div class="column">
+        <div class="button-wrapper">
+          <button class="start-button">Start</button>
+        </div>
+      </div>
     </div>
-    <div class="timer item">
-      <h2 class="time"></h2>
-    </div>
-    <div class="button-wrapper item">
-      <button class="start-button">START</button>
+
+    <div class="options">
+      <input type="checkbox" id="sound" name="sound">
+      <label for="sound">Sound</label>
     </div>
   </div>
   <script defer src="popup.js"></script>

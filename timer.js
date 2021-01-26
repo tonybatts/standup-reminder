@@ -1,5 +1,7 @@
 let timeEl = document.querySelector(".time")
-let time = 61
+let time = 60
+
+
 
 let interval = function () {
   if (time >= 1) {
@@ -11,4 +13,7 @@ let interval = function () {
   }
 }
 
-setInterval(interval, 1000);
+setTimeout(function () {
+  document.querySelector("#popup").remove()
+  setInterval(interval, 1000);
+}, 3000);
