@@ -1,65 +1,48 @@
-if (document.querySelector("#sound").checked === true || document.querySelector("#sound").checked === null) {
-  document.querySelector("#sound").checked = true
-}
+const startStopButton = document.querySelector(".start-button");
 
-chrome.storage.local.get(["sound"], (result) => {
+chrome.storage.sync.get(["sound"], (result) => {
   if (result.sound === true) {
-    document.querySelector("#sound").checked = true
+    document.querySelector("#sound").checked = true;
   }
-})
+});
 
-
-chrome.storage.local.get(["state"], (result) => {
-  let button = document.querySelector(".start-button")
-  if (result.state === "Stop") {
-    button.textContent = "Stop"
-    button.classList.add("red")
+const updateButtonUI = (state) => {
+  if (state === "Start") {
+    startStopButton.textContent = "Stop";
+    startStopButton.classList.add("red");
   } else {
-    button.textContent = "Start"
-    if (button.classList.contains("red")) {
-      button.classList.remove("red")
+    startStopButton.textContent = "Start";
+    if (startStopButton.classList.contains("red")) {
+      startStopButton.classList.remove("red");
     }
   }
-})
+};
 
+chrome.storage.sync.get(["state"], (result) => {
+  updateButtonUI(result.state);
+});
 
 const toggleButton = () => {
-
-  chrome.storage.local.get(["state"], (result) => {
-    state = result.state
-
-    if (state === "Start" || state === null || state === undefined) {
-      button.textContent = "Stop"
-      chrome.storage.local.set({ "state": "Stop" })
-      button.classList.add("red")
+  chrome.storage.sync.get(["state"], (result) => {
+    if (result?.state === "Start" || !result?.state) {
+      chrome.storage.sync.set({ state: "Stop" });
+      setTimer("Stop");
+      updateButtonUI("Stop");
     } else {
-      button.textContent = "Start"
-      chrome.storage.local.set({ "state": "Start" });
-      if (button.classList.contains("red")) {
-        button.classList.remove("red")
-      }
+      chrome.storage.sync.set({ state: "Start" });
+      setTimer("Start");
+      updateButtonUI("Start");
     }
-  })
-
-
-}
+  });
+};
 
 const setTimer = (buttonState) => {
-  chrome.runtime.sendMessage({ state: buttonState })
-  chrome.runtime.getBackgroundPage(function (backgroundPage) {
-    console = backgroundPage.console;
-  })
-}
+  console.log("sending to service worker", buttonState);
+  chrome.runtime.sendMessage({ state: buttonState });
+};
 
-
-let button = document.querySelector(".start-button")
-button.addEventListener("click", () => {
-  toggleButton()
-  button = document.querySelector("button")
-  setTimer(button.textContent)
-})
+startStopButton.addEventListener("click", toggleButton);
 
 document.querySelector("#sound").addEventListener("change", (e) => {
-  chrome.storage.local.set({ "sound": e.target.checked })
-})
-
+  chrome.storage.sync.set({ sound: e.target.checked });
+});

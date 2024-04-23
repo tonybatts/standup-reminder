@@ -1,19 +1,29 @@
-let timeEl = document.querySelector(".time")
-let time = 60
+let timeEl = document.querySelector(".time");
+let time = 60;
 
+const onAlarm = () => {
+  chrome.storage.sync.get(["sound"], (result) => {
+    if (result.sound === true) {
+      const ding = new Audio("sound/notification_sound.mp3");
+      ding.volume = 0.7;
+      ding.play();
+    }
+  });
+};
 
+onAlarm();
 
-let interval = function () {
+const countdownInterval = () => {
   if (time >= 1) {
-    timeEl.textContent = time - 1
-    time = time - 1
+    timeEl.textContent = time - 1;
+    time = time - 1;
   } else {
-    clearInterval(interval)
-    window.close()
+    clearInterval(countdownInterval);
+    window.close();
   }
-}
+};
 
 setTimeout(function () {
-  document.querySelector("#popup").remove()
-  setInterval(interval, 1000);
+  document.querySelector("#popup").remove();
+  setInterval(countdownInterval, 1000);
 }, 3000);
