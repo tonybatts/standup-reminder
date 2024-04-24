@@ -1,6 +1,5 @@
 // when the alarm fires show a popup with a countdown timer to tell the user to stand up for 60 seconds
 const onAlarm = () => {
-  console.log("alarm fired");
   chrome.tabs.query({ active: true, lastFocusedWindow: true }, (tab) => {
     chrome.windows.create({
       url: "timer.html",
@@ -11,6 +10,8 @@ const onAlarm = () => {
   });
 };
 
+// when the service worker launches or "wakes up" attach the listener so the alarm is fired
+// NOTE: if we don't do this at the top level then the alarm does not work if the periodInMinutes is over 30 seconds
 chrome.alarms.onAlarm.addListener(onAlarm);
 
 chrome.runtime.onMessage.addListener(async (request) => {
