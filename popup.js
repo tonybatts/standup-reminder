@@ -5,6 +5,7 @@ chrome.storage.sync.get(["sound"], (result) => {
   if (result.sound === true) {
     document.querySelector("#sound").checked = true;
   }
+  document.querySelector(".switch").classList.add("show");
 });
 
 const updateButtonUI = (state) => {

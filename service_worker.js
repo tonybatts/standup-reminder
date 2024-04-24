@@ -10,13 +10,16 @@ const onAlarm = () => {
   });
 };
 
+// when the service worker launches or "wakes up" attach the listener so the alarm is fired
+// NOTE: if we don't do this at the top level then the alarm does not work if the periodInMinutes is over 30 seconds
+chrome.alarms.onAlarm.addListener(onAlarm);
+
 chrome.runtime.onMessage.addListener(async (request) => {
   // upsert alarm
   if (request.state === "Start" || request.message === "create-alarm") {
     const alarm = await chrome.alarms.get("standup");
     if (!alarm) {
       chrome.alarms.create("standup", { periodInMinutes: 60 });
-      chrome.alarms.onAlarm.addListener(onAlarm);
     }
   }
   // remove alarm
@@ -24,7 +27,6 @@ chrome.runtime.onMessage.addListener(async (request) => {
     const alarm = await chrome.alarms.get("standup");
     if (alarm) {
       chrome.alarms.clearAll();
-      chrome.alarms.onAlarm.removeListener(onAlarm);
     }
   }
 });
