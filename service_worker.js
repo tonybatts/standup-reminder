@@ -1,5 +1,6 @@
 // when the alarm fires show a popup with a countdown timer to tell the user to stand up for 60 seconds
 const onAlarm = () => {
+  console.log("alarm fired");
   chrome.tabs.query({ active: true, lastFocusedWindow: true }, (tab) => {
     chrome.windows.create({
       url: "timer.html",
@@ -10,13 +11,14 @@ const onAlarm = () => {
   });
 };
 
+chrome.alarms.onAlarm.addListener(onAlarm);
+
 chrome.runtime.onMessage.addListener(async (request) => {
   // upsert alarm
   if (request.state === "Start" || request.message === "create-alarm") {
     const alarm = await chrome.alarms.get("standup");
     if (!alarm) {
       chrome.alarms.create("standup", { periodInMinutes: 60 });
-      chrome.alarms.onAlarm.addListener(onAlarm);
     }
   }
   // remove alarm
@@ -24,7 +26,6 @@ chrome.runtime.onMessage.addListener(async (request) => {
     const alarm = await chrome.alarms.get("standup");
     if (alarm) {
       chrome.alarms.clearAll();
-      chrome.alarms.onAlarm.removeListener(onAlarm);
     }
   }
 });
