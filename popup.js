@@ -1,5 +1,6 @@
 const startStopButton = document.querySelector(".start-button");
 
+// when the pop up opens set the checkbox state
 chrome.storage.sync.get(["sound"], (result) => {
   if (result.sound === true) {
     document.querySelector("#sound").checked = true;
@@ -18,13 +19,15 @@ const updateButtonUI = (state) => {
   }
 };
 
+// when the pop up is opened set the button styles based on the saved alarm state
 chrome.storage.sync.get(["state"], (result) => {
   updateButtonUI(result.state);
 });
 
+// toggles the button between "Start" and "Stop" states
 const toggleButton = () => {
   chrome.storage.sync.get(["state"], (result) => {
-    if (result?.state === "Start" || !result?.state) {
+    if (result?.state === "Start") {
       chrome.storage.sync.set({ state: "Stop" });
       setTimer("Stop");
       updateButtonUI("Stop");
@@ -36,13 +39,14 @@ const toggleButton = () => {
   });
 };
 
+// tells the service worker to either remove the current alarm, or create a new one
 const setTimer = (buttonState) => {
-  console.log("sending to service worker", buttonState);
   chrome.runtime.sendMessage({ state: buttonState });
 };
 
 startStopButton.addEventListener("click", toggleButton);
 
+// update the saved user selection of having a sound on or off for the alarm
 document.querySelector("#sound").addEventListener("change", (e) => {
   chrome.storage.sync.set({ sound: e.target.checked });
 });
