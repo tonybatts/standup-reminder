@@ -59,6 +59,7 @@ body {
 }
 
 .header {
+  justify-content: space-between;
   align-items: center;
   gap: 5px;
   display: flex;
@@ -72,6 +73,11 @@ h1 {
   color: white;
 }
 
+.logo-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
 .logo {
   width: 20px;
   fill: white;
@@ -83,6 +89,29 @@ h1 {
   justify-content: space-between;
   padding: 10px 5%;
   align-items: center;
+}
+
+time {
+  display: none;
+  padding-top: 8px;
+  font-size: 18px;
+  color: white;
+}
+
+time.show.disabled {
+  color: var(--smi-color-primary-lighten-4);
+}
+
+time::before {
+  font-size: 10px;
+  content: "mins";
+  position: absolute;
+  top: 13px;
+}
+
+time.show {
+  display: flex;
+  justify-content: center;
 }
 
 .column {

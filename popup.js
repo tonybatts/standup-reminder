@@ -25,6 +25,18 @@ chrome.storage.sync.get(["state"], (result) => {
   updateButtonUI(result.state);
 });
 
+// when the pop up is opened set the button styles based on the saved alarm state
+chrome.storage.sync.get(["time"], (result) => {
+  const timeEl = document.querySelector("time");
+  chrome.storage.sync.get(["state"], (result) => {
+    if (result.state === "Stop") {
+      timeEl.classList.add("disabled");
+    }
+  });
+  timeEl.textContent = result.time ?? 60;
+  timeEl.classList.add("show");
+});
+
 // toggles the button between "Start" and "Stop" states
 const toggleButton = () => {
   chrome.storage.sync.get(["state"], (result) => {
@@ -50,4 +62,16 @@ startStopButton.addEventListener("click", toggleButton);
 // update the saved user selection of having a sound on or off for the alarm
 document.querySelector("#sound").addEventListener("change", (e) => {
   chrome.storage.sync.set({ sound: e.target.checked });
+});
+
+chrome.storage.sync.onChanged.addListener((changes, namespace) => {
+  if (changes.time?.newValue) {
+    document.querySelector("time").textContent = changes.time.newValue;
+  }
+  if (changes.state?.newValue === "Stop") {
+    document.querySelector("time").classList.add("disabled");
+  }
+  if (changes.state?.newValue === "Start") {
+    document.querySelector("time").classList.remove("disabled");
+  }
 });
