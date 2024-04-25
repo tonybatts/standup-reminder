@@ -4,7 +4,7 @@
   "version": "2",
   "description": "A reminder to stand up and stretch your legs for one minute every hour.",
   "short_name": "Stand Up",
-  "permissions": ["contextMenus", "alarms", "storage", "tabs"],
+  "permissions": ["alarms", "storage", "tabs"],
   "background": {
     "service_worker": "service_worker.js"
   },
