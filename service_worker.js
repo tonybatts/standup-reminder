@@ -49,8 +49,12 @@ chrome.runtime.onMessage.addListener(async (request) => {
 });
 
 // when the users machine wakes up or is turned on check if the alarm is still on if it should be
-chrome.idle.onStateChanged.addListener((newState) => {
+chrome.idle.onStateChanged.addListener(async (newState) => {
   if (newState === 'active') {
-    upsertAlarm();
+    const result = await chrome.storage.sync.get(['state']);
+
+    if (result.state === 'Start') {
+      upsertAlarm();
+    }
   }
 });
